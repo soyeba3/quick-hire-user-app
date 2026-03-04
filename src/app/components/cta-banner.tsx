@@ -1,40 +1,61 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export const CTABanner = () => {
   return (
-    <section className="py-12">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="bg-primary relative overflow-hidden flex flex-col lg:flex-row items-center justify-between px-12 lg:px-24 py-16 lg:py-0 h-auto lg:h-[460px]">
-          {/* Background decoration */}
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-white/5 skew-x-12 translate-x-1/4 pointer-events-none" />
+    <section className="overflow-hidden py-24 bg-white">
+      <div className="container px-4 mx-auto md:px-8">
+        <div className="relative w-full min-h-[420px] flex flex-col lg:flex-row items-center group">
+          {/* Background Shape */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/rectangle.svg"
+              alt="background"
+              fill
+              className="object-fill select-none"
+              priority
+            />
+          </div>
 
-          <div className="lg:w-1/2 space-y-6 z-10 text-center lg:text-left">
-            <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
-              Start posting <br /> jobs today
+          {/* Content Area */}
+          <div className="relative z-10 lg:w-[45%] px-8 lg:pl-20 py-16 lg:py-0 text-white flex flex-col items-start text-left">
+            <h2 className="text-4xl lg:text-5xl font-black leading-[1.1] mb-6">
+              Start posting <br />
+              jobs today
             </h2>
-            <p className="text-white/80 text-xl">
+            <p className="mb-8 text-lg font-medium text-white/90">
               Start posting jobs for only $10.
             </p>
             <Link
               href="/signup"
-              className="inline-block bg-white text-primary px-8 py-4 font-bold text-lg transition-transform hover:scale-105 active:scale-95 shadow-xl"
+              className="px-10 py-5 text-lg font-extrabold bg-white rounded-sm shadow-lg transition-all text-[#4640DE] hover:bg-gray-50 active:scale-95 whitespace-nowrap"
             >
               Sign Up For Free
             </Link>
           </div>
 
-          <div className="lg:w-1/2 mt-12 lg:mt-0 relative z-10 flex justify-center items-end h-full">
-            {/* Using a placeholder for the dashboard graphic */}
-            <div className="bg-white/10 border border-white/20 rounded-xl p-4 w-full max-w-md h-[300px] mb-[-20px] backdrop-blur-sm flex items-center justify-center">
-              <div className="text-white/40 text-center">
-                <div className="text-4xl mb-2 font-bold">QuickHire</div>
-                <p>Dashboard Interface Graphic</p>
-              </div>
+          {/* Graphic Area */}
+          <div className="relative z-10 lg:w-[55%] w-full h-[300px] lg:h-[450px] flex items-center justify-center lg:justify-end lg:pr-4 overflow-visible">
+            <div className="relative w-full h-full max-w-[650px] lg:scale-110 lg:translate-x-10 lg:translate-y-4 transition-transform duration-500 group-hover:scale-[1.12]">
+              <Image
+                src="/images/dashboard_ompany.svg"
+                alt="QuickHire Dashboard"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
+          </div>
 
-            {/* Floating tag like in design */}
-            <div className="absolute top-1/2 left-0 bg-[#FF4F81] text-white px-6 py-2 rounded-full font-bold shadow-2xl animate-pulse hidden lg:block">
-              1192 Hug × 460 Hug
+          {/* Circular Portrait at the bottom */}
+          <div className="absolute bottom-[-35px] left-1/2 -translate-x-1/2 z-20 hidden lg:block translate-y-2">
+            <div className="relative w-[75px] h-[75px] rounded-full border-4 border-white shadow-xl overflow-hidden bg-gray-100">
+              <Image
+                src="/images/man.png"
+                alt="QuickHire User"
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
         </div>
