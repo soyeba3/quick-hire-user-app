@@ -1,96 +1,115 @@
 "use client";
 
-import { useAxios } from "@/hooks/use-axios";
+import { login } from "@/app/actions/auth-action";
 import { useAuth } from "@/lib/auth/use-auth";
-import { ApiResponse } from "@/types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { LoginInput, loginSchema } from "./schemas/login.schema";
+
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const { setAuth } = useAuth();
-  const axios = useAxios();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginInput) => {
     setIsLoading(true);
     setError("");
 
     try {
-      const { data } = await axios.post<
-        ApiResponse<{ token: string; user: { email: string; role: string } }>
-      >("/auth/login", { email, password });
+      const response = await login(data);
 
-      if (data.status === "success") {
-        setAuth(data.data.user, data.data.token);
+      if (response.status === "success") {
+        setAuth(response.data.user, response.data.token);
         router.push("/admin");
       }
-    } catch (err: any) {
-      setError(err.message || "Invalid credentials. Please try again.");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Invalid credentials. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-bg-light flex items-center justify-center px-4 py-20">
-      <div className="bg-white p-12 shadow-2xl border border-border-base max-w-lg w-full">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-text-dark mb-4">
+    <div className="flex justify-center items-center px-4 py-20 min-h-screen bg-bg-light">
+      <div className="p-12 w-full max-w-lg bg-white border shadow-2xl border-border-base">
+        <div className="mb-10 text-center">
+          <h1 className="mb-4 text-4xl font-bold text-text-dark">
             Welcome Back Admin
           </h1>
-          <p className="text-text-gray text-lg">
+          <p className="text-lg text-text-gray">
             Enter your details to access the dashboard
           </p>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 mb-6 rounded">
+          <div className="px-4 py-3 mb-6 text-red-600 bg-red-50 rounded border border-red-200">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <label className="block text-text-dark font-bold mb-2">
+            <label className="block mb-2 font-bold text-text-dark">
               Email Address
             </label>
             <input
               type="email"
-              required
+              {...register("email")}
               placeholder="admin@quickhire.com"
-              className="w-full px-4 py-4 border border-border-base focus:outline-none focus:border-primary text-lg"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              className={`w-full px-4 py-4 border focus:outline-none focus:border-primary text-lg ${
+                errors.email ? "border-red-500" : "border-border-base"
+              }`}
             />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.email.message}
+              </p>
+            )}
           </div>
           <div>
-            <label className="block text-text-dark font-bold mb-2">
+            <label className="block mb-2 font-bold text-text-dark">
               Password
             </label>
             <input
               type="password"
-              required
+              {...register("password")}
               placeholder="••••••••"
-              className="w-full px-4 py-4 border border-border-base focus:outline-none focus:border-primary text-lg"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              className={`w-full px-4 py-4 border focus:outline-none focus:border-primary text-lg ${
+                errors.password ? "border-red-500" : "border-border-base"
+              }`}
             />
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer">
+          <div className="flex justify-between items-center">
+            <label className="flex gap-2 items-center cursor-pointer">
               <input type="checkbox" className="w-5 h-5 accent-primary" />
               <span className="text-text-gray">Remember me</span>
             </label>
             <button
               type="button"
-              className="text-primary font-bold hover:underline"
+              className="font-bold text-primary hover:underline"
             >
               Forgot password?
             </button>
@@ -99,19 +118,19 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-primary text-white font-bold py-4 text-xl transition-all hover:bg-opacity-90 disabled:opacity-50 shadow-lg shadow-primary/20"
+            className="py-4 w-full text-xl font-bold text-white shadow-lg transition-all bg-primary hover:bg-opacity-90 disabled:opacity-50 shadow-primary/20"
           >
             {isLoading ? "Logging in..." : "Login to Dashboard"}
           </button>
         </form>
 
-        <div className="mt-10 pt-8 border-t border-border-base text-center">
+        <div className="pt-8 mt-10 text-center border-t border-border-base">
           <p className="text-text-gray">
             Fixed credentials for preview: <br />
-            <span className="text-text-dark font-bold">
+            <span className="font-bold text-text-dark">
               admin@quickhire.com
             </span>{" "}
-            / <span className="text-text-dark font-bold">admin123</span>
+            / <span className="font-bold text-text-dark">admin123</span>
           </p>
         </div>
       </div>

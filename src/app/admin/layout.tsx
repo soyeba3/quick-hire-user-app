@@ -6,6 +6,7 @@ import {
   FileText,
   LayoutDashboard,
   LogOut,
+  LucideIcon,
   Settings,
 } from "lucide-react";
 import Link from "next/link";
@@ -18,7 +19,7 @@ const SidebarItem = ({
   href,
   active,
 }: {
-  icon: any;
+  icon: LucideIcon;
   label: string;
   href: string;
   active: boolean;
@@ -27,7 +28,7 @@ const SidebarItem = ({
     href={href}
     className={`flex items-center gap-4 px-6 py-4 transition-all border-l-4 ${
       active
-        ? "bg-primary/10 border-primary text-primary font-bold"
+        ? "font-bold bg-primary/10 border-primary text-primary"
         : "border-transparent text-text-gray hover:bg-bg-light hover:text-text-dark"
     }`}
   >
@@ -53,8 +54,8 @@ export default function AdminLayout({
 
   if (isAuthenticated === undefined || isAuthenticated === false) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      <div className="flex justify-center items-center min-h-screen bg-white">
+        <div className="w-16 h-16 rounded-full border-4 animate-spin border-primary border-t-transparent" />
       </div>
     );
   }
@@ -62,10 +63,10 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen bg-bg-light">
       {/* Admin Sidebar */}
-      <aside className="w-80 bg-white border-r border-border-base flex flex-col fixed inset-y-0 shadow-sm z-50">
-        <div className="p-8 border-b border-border-base flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary rounded-lg" />
-          <span className="text-2xl font-black text-text-dark tracking-tighter italic">
+      <aside className="flex fixed inset-y-0 z-50 flex-col w-80 bg-white border-r shadow-sm border-border-base">
+        <div className="flex gap-3 items-center p-8 border-b border-border-base">
+          <div className="w-10 h-10 rounded-lg bg-primary" />
+          <span className="text-2xl italic font-black tracking-tighter text-text-dark">
             QuickHire Admin
           </span>
         </div>
@@ -98,13 +99,13 @@ export default function AdminLayout({
         </nav>
 
         <div className="p-8 border-t border-border-base">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center text-primary font-bold">
+          <div className="flex gap-4 items-center mb-8">
+            <div className="flex justify-center items-center w-12 h-12 font-bold rounded-full bg-primary/20 text-primary">
               {user?.email?.charAt(0).toUpperCase()}
             </div>
             <div className="overflow-hidden">
-              <p className="text-text-dark font-bold truncate">{user?.email}</p>
-              <p className="text-text-light text-sm">Administrator</p>
+              <p className="font-bold truncate text-text-dark">{user?.email}</p>
+              <p className="text-sm text-text-light">Administrator</p>
             </div>
           </div>
           <button
@@ -112,7 +113,7 @@ export default function AdminLayout({
               removeAuth();
               router.push("/login");
             }}
-            className="flex items-center gap-3 text-red-500 font-bold hover:text-red-600 transition-colors w-full"
+            className="flex gap-3 items-center w-full font-bold text-red-500 transition-colors hover:text-red-600"
           >
             <LogOut size={24} />
             <span className="text-lg">Logout</span>
@@ -121,7 +122,7 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content Area */}
-      <main className="ml-80 flex-grow p-12 overflow-y-auto">{children}</main>
+      <main className="overflow-y-auto flex-grow p-12 ml-80">{children}</main>
     </div>
   );
 }

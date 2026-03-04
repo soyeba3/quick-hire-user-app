@@ -1,121 +1,80 @@
-import { useToast } from "@/components/toasts";
-import useAxios from "@/hooks/use-axios";
-import { ApiResponse, Job, PaginatedData } from "@/types";
+import {
+  createJob,
+  CreateJobInput,
+  deleteJob,
+  getJobDetail,
+  getJobs,
+  JobFilters,
+  updateJob,
+} from "@/app/actions/job-action";
+import { useAuth } from "@/lib/auth/use-auth";
+import { Job, PaginatedData } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export const useGetJobs = (params?: {
-  search?: string;
-  category?: string;
-  type?: string;
-  page?: number;
-  limit?: number;
-}) => {
-  const axios = useAxios();
-
-  return useQuery({
-    queryKey: ["jobs", params],
+export const useGetJobs = (filters: JobFilters = {}) => {
+  return useQuery<PaginatedData<Job>>({
+    queryKey: ["jobs", filters],
     queryFn: async () => {
-      const { data } = await axios.get<ApiResponse<PaginatedData<Job>>>(
-        "/jobs",
-        {
-          params,
-        },
-      );
-      return data.data;
+      const res = await getJobs(filters);
+      return res.data;
     },
   });
 };
 
-export const useGetJobDetail = (id: string | number) => {
-  const axios = useAxios();
-
-  return useQuery({
+export const useGetJobDetail = (id: string) => {
+  return useQuery<Job>({
     queryKey: ["job", id],
     queryFn: async () => {
-      const { data } = await axios.get<ApiResponse<Job>>(`/jobs/${id}`);
-      return data.data;
+      const res = await getJobDetail(id);
+      return res.data;
     },
     enabled: !!id,
   });
 };
 
 export const useCreateJob = () => {
-  const axios = useAxios();
   const queryClient = useQueryClient();
-  const { showToast } = useToast();
+  const { token } = useAuth();
 
-  return useMutation({
-    mutationFn: async (job: Partial<Job>) => {
-      const { data } = await axios.post<ApiResponse<Job>>("/admin/jobs", job);
-      return data;
+  return useMutation<Job, Error, CreateJobInput>({
+    mutationFn: async (data) => {
+      const res = await createJob(token as string, data);
+      return res.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      showToast({
-        variant: "success",
-        description: "Job created successfully",
-      });
-    },
-    onError: () => {
-      showToast({ variant: "error", description: "Failed to create job" });
     },
   });
 };
 
 export const useUpdateJob = () => {
-  const axios = useAxios();
   const queryClient = useQueryClient();
-  const { showToast } = useToast();
+  const { token } = useAuth();
 
-  return useMutation({
-    mutationFn: async ({
-      id,
-      data,
-    }: {
-      id: number | string;
-      data: Partial<Job>;
-    }) => {
-      const { data: response } = await axios.put<ApiResponse<Job>>(
-        `/admin/jobs/${id}`,
-        data,
-      );
-      return response;
+  return useMutation<Job, Error, { id: number; data: Partial<CreateJobInput> }>(
+    {
+      mutationFn: async ({ id, data }) => {
+        const res = await updateJob(token as string, id, data);
+        return res.data;
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      },
     },
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      queryClient.invalidateQueries({ queryKey: ["job", id] });
-      showToast({
-        variant: "success",
-        description: "Job updated successfully",
-      });
-    },
-    onError: () => {
-      showToast({ variant: "error", description: "Failed to update job" });
-    },
-  });
+  );
 };
 
 export const useDeleteJob = () => {
-  const axios = useAxios();
   const queryClient = useQueryClient();
-  const { showToast } = useToast();
+  const { token } = useAuth();
 
-  return useMutation({
-    mutationFn: async (id: number | string) => {
-      const { data } = await axios.delete<ApiResponse<null>>(
-        `/admin/jobs/${id}`,
-      );
-      return data;
+  return useMutation<{ message: string }, Error, number>({
+    mutationFn: async (id) => {
+      const res = await deleteJob(token as string, id);
+      return res.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      showToast({
-        variant: "success",
-        description: "Job deleted successfully",
-      });
-    },
-    onError: () => {
-      showToast({ variant: "error", description: "Failed to delete job" });
     },
   });
 };

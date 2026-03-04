@@ -4,24 +4,29 @@ import { useCreateJob } from "@/services/job-service";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { JobInput, jobSchema } from "./schemas/job.schema";
 
 export default function CreateJobPage() {
-  const [formData, setFormData] = useState({
-    title: "",
-    company: "",
-    location: "",
-    category: "Technology",
-    type: "Full-Time",
-    description: "",
-  });
-
   const router = useRouter();
   const { mutate: createJob, isPending } = useCreateJob();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    createJob(formData, {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<JobInput>({
+    resolver: zodResolver(jobSchema),
+    defaultValues: {
+      category: "Technology",
+      type: "Full-Time",
+    },
+  });
+
+  const onSubmit = (data: JobInput) => {
+    createJob(data, {
       onSuccess: () => {
         router.push("/admin");
       },
@@ -29,10 +34,10 @@ export default function CreateJobPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="mx-auto max-w-5xl">
       <Link
         href="/admin"
-        className="flex items-center gap-2 text-text-gray hover:text-primary transition-colors mb-8 font-bold text-lg"
+        className="flex gap-2 items-center mb-8 text-lg font-bold transition-colors text-text-gray hover:text-primary"
       >
         <ArrowLeft size={24} />
         Back to Dashboard
@@ -42,23 +47,26 @@ export default function CreateJobPage() {
         <h1 className="text-4xl font-bold text-text-dark">Post a New Job</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-12">
-        <div className="bg-white p-12 border border-border-base shadow-sm space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
+        <div className="p-12 space-y-8 bg-white border shadow-sm border-border-base">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div className="space-y-3">
               <label className="block text-xl font-bold text-text-dark">
                 Job Title
               </label>
               <input
                 type="text"
-                required
+                {...register("title")}
                 placeholder="e.g. Senior Product Designer"
-                className="w-full px-6 py-4 border border-border-base focus:outline-none focus:border-primary text-lg"
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
+                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg ${
+                  errors.title ? "border-red-500" : "border-border-base"
+                }`}
               />
+              {errors.title && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.title.message}
+                </p>
+              )}
             </div>
             <div className="space-y-3">
               <label className="block text-xl font-bold text-text-dark">
@@ -66,67 +74,81 @@ export default function CreateJobPage() {
               </label>
               <input
                 type="text"
-                required
+                {...register("company")}
                 placeholder="e.g. Acme Corp"
-                className="w-full px-6 py-4 border border-border-base focus:outline-none focus:border-primary text-lg"
-                value={formData.company}
-                onChange={(e) =>
-                  setFormData({ ...formData, company: e.target.value })
-                }
+                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg ${
+                  errors.company ? "border-red-500" : "border-border-base"
+                }`}
               />
+              {errors.company && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.company.message}
+                </p>
+              )}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="space-y-3">
               <label className="block text-xl font-bold text-text-dark">
                 Location
               </label>
               <input
                 type="text"
-                required
+                {...register("location")}
                 placeholder="e.g. San Francisco, CA"
-                className="w-full px-6 py-4 border border-border-base focus:outline-none focus:border-primary text-lg"
-                value={formData.location}
-                onChange={(e) =>
-                  setFormData({ ...formData, location: e.target.value })
-                }
+                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg ${
+                  errors.location ? "border-red-500" : "border-border-base"
+                }`}
               />
+              {errors.location && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.location.message}
+                </p>
+              )}
             </div>
             <div className="space-y-3">
               <label className="block text-xl font-bold text-text-dark">
                 Category
               </label>
               <select
-                className="w-full px-6 py-4 border border-border-base focus:outline-none focus:border-primary text-lg bg-white appearance-none"
-                value={formData.category}
-                onChange={(e) =>
-                  setFormData({ ...formData, category: e.target.value })
-                }
+                {...register("category")}
+                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg bg-white appearance-none ${
+                  errors.category ? "border-red-500" : "border-border-base"
+                }`}
               >
-                <option>Technology</option>
-                <option>Design</option>
-                <option>Marketing</option>
-                <option>Sales</option>
-                <option>Business</option>
+                <option value="Technology">Technology</option>
+                <option value="Design">Design</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Sales">Sales</option>
+                <option value="Business">Business</option>
               </select>
+              {errors.category && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.category.message}
+                </p>
+              )}
             </div>
             <div className="space-y-3">
               <label className="block text-xl font-bold text-text-dark">
                 Employment Type
               </label>
               <select
-                className="w-full px-6 py-4 border border-border-base focus:outline-none focus:border-primary text-lg bg-white appearance-none"
-                value={formData.type}
-                onChange={(e) =>
-                  setFormData({ ...formData, type: e.target.value })
-                }
+                {...register("type")}
+                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg bg-white appearance-none ${
+                  errors.type ? "border-red-500" : "border-border-base"
+                }`}
               >
-                <option>Full-Time</option>
-                <option>Part-Time</option>
-                <option>Contract</option>
-                <option>Remote</option>
+                <option value="Full-Time">Full-Time</option>
+                <option value="Part-Time">Part-Time</option>
+                <option value="Contract">Contract</option>
+                <option value="Remote">Remote</option>
               </select>
+              {errors.type && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.type.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -135,22 +157,25 @@ export default function CreateJobPage() {
               Job Description
             </label>
             <textarea
-              required
+              {...register("description")}
               rows={12}
               placeholder="Detailed job description..."
-              className="w-full px-6 py-4 border border-border-base focus:outline-none focus:border-primary text-lg resize-none"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
+              className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg resize-none ${
+                errors.description ? "border-red-500" : "border-border-base"
+              }`}
             />
+            {errors.description && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.description.message}
+              </p>
+            )}
           </div>
 
           <div className="flex justify-end pt-8">
             <button
               type="submit"
               disabled={isPending}
-              className="bg-primary text-white px-12 py-5 font-bold flex items-center gap-3 transition-all hover:bg-opacity-90 shadow-xl shadow-primary/20 disabled:opacity-50 text-xl"
+              className="flex gap-3 items-center px-12 py-5 text-xl font-bold text-white shadow-xl transition-all bg-primary hover:bg-opacity-90 shadow-primary/20 disabled:opacity-50"
             >
               <Save size={24} />
               {isPending ? "Posting..." : "Review and Post Job"}

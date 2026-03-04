@@ -16,14 +16,14 @@ const FilterSection = ({
   onSelect,
 }: FilterSectionProps) => (
   <div className="mb-10">
-    <h4 className="text-xl font-bold text-text-dark mb-6 tracking-tight">
+    <h4 className="mb-6 text-xl font-bold tracking-tight text-text-dark">
       {title}
     </h4>
     <div className="space-y-4">
       {options.map((option) => (
         <label
           key={option.value}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex gap-3 items-center cursor-pointer group"
           onClick={() => onSelect(option.value)}
         >
           <div
@@ -47,7 +47,7 @@ const FilterSection = ({
             {option.label}
           </span>
           {option.count !== undefined && (
-            <span className="text-text-light ml-auto">({option.count})</span>
+            <span className="ml-auto text-text-light">({option.count})</span>
           )}
         </label>
       ))}
@@ -85,7 +85,7 @@ export const JobFilters = ({
   ];
 
   return (
-    <aside className="w-full md:w-80 flex-shrink-0">
+    <aside className="flex-shrink-0 w-full md:w-80">
       <FilterSection
         title="Type of Employment"
         options={typeOptions}
