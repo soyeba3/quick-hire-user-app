@@ -1,17 +1,11 @@
 import { config } from "@/config";
 import { ApiResponse } from "@/types";
 
-export async function fetchWrapper<T>(
-  path: string,
+async function baseFetch<T>(
+  url: string,
+  headers: Record<string, string>,
   options: RequestInit = {},
 ): Promise<ApiResponse<T>> {
-  const url = `${config.apiEndpoint}${path}`;
-
-  const headers = new Headers({
-    "Content-Type": "application/json",
-    ...options.headers,
-  });
-
   const res = await fetch(url, {
     ...options,
     headers,
@@ -20,13 +14,23 @@ export async function fetchWrapper<T>(
   const data = (await res.json()) as ApiResponse<T>;
 
   if (!res.ok) {
-    throw new Error(
-      (data as ApiResponse<T> & { message?: string }).message ||
-        "Something went wrong",
-    );
+    const errorData = data as ApiResponse<{ message?: string }>;
+    throw new Error(errorData.data?.message ?? "Something went wrong");
   }
 
   return data;
+}
+
+export async function fetchWrapper<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<ApiResponse<T>> {
+  const url = `${config.apiEndpoint}${path}`;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  return baseFetch<T>(url, headers, options);
 }
 
 export async function authenticatedFetchWrapper<T>(
@@ -34,14 +38,11 @@ export async function authenticatedFetchWrapper<T>(
   token: string,
   options: RequestInit = {},
 ): Promise<ApiResponse<T>> {
-  const headers = new Headers({
+  const url = `${config.apiEndpoint}${path}`;
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
-    ...options.headers,
-  });
+  };
 
-  return fetchWrapper<T>(path, {
-    ...options,
-    headers: Object.fromEntries(headers.entries()),
-  });
+  return baseFetch<T>(url, headers, options);
 }

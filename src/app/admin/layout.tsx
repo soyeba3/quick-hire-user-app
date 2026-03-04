@@ -11,7 +11,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 const SidebarItem = ({
   icon: Icon,
@@ -42,17 +46,26 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
   const { isAuthenticated, removeAuth, user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isAuthenticated === false) {
+    if (mounted === true && isAuthenticated === false) {
       router.push("/login");
     }
-  }, [isAuthenticated, router]);
+  }, [mounted, isAuthenticated, router]);
 
-  if (isAuthenticated === undefined || isAuthenticated === false) {
+  if (
+    mounted === false ||
+    isAuthenticated === undefined ||
+    isAuthenticated === false
+  ) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white">
         <div className="w-16 h-16 rounded-full border-4 animate-spin border-primary border-t-transparent" />
@@ -62,7 +75,6 @@ export default function AdminLayout({
 
   return (
     <div className="flex min-h-screen bg-bg-light">
-      {/* Admin Sidebar */}
       <aside className="flex fixed inset-y-0 z-50 flex-col w-80 bg-white border-r shadow-sm border-border-base">
         <div className="flex gap-3 items-center p-8 border-b border-border-base">
           <div className="w-10 h-10 rounded-lg bg-primary" />
@@ -121,7 +133,6 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <main className="overflow-y-auto flex-grow p-12 ml-80">{children}</main>
     </div>
   );

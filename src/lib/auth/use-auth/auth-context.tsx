@@ -34,15 +34,16 @@ export default function AuthProvider({ children }: Props) {
     "",
   );
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!userState);
-  const [isLoading, setIsLoading] = useState(!userState);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const id = setTimeout(() => {
+      setIsAuthenticated(!!userState);
       setIsLoading(false);
     }, 0);
     return () => clearTimeout(id);
-  }, [userState]);
+  }, []);
 
   const setAuth = (user: AuthUser, token: string) => {
     setUserState(user);
