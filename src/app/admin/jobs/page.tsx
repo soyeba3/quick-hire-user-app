@@ -24,7 +24,7 @@ export default function AdminJobsPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-12">
+      <div className="flex justify-between items-center mt-12 mb-12">
         <div>
           <h1 className="text-4xl font-bold text-text-dark">Job Listings</h1>
           <p className="mt-2 text-lg text-text-gray">

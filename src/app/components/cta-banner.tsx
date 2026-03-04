@@ -3,58 +3,36 @@ import Link from "next/link";
 
 export const CTABanner = () => {
   return (
-    <section className="overflow-hidden py-24 bg-white">
+    <section className="overflow-hidden py-16 bg-white">
       <div className="container px-4 mx-auto md:px-8">
-        <div className="relative w-full min-h-[420px] flex flex-col lg:flex-row items-center group">
-          {/* Background Shape */}
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/rectangle.svg"
-              alt="background"
-              fill
-              className="object-fill select-none"
-              priority
-            />
-          </div>
-
-          {/* Content Area */}
-          <div className="relative z-10 lg:w-[45%] px-8 lg:pl-20 py-16 lg:py-0 text-white flex flex-col items-start text-left">
-            <h2 className="text-4xl lg:text-5xl font-black leading-[1.1] mb-6">
+        <div
+          className="relative w-full min-h-[480px] lg:h-[480px] flex items-center overflow-hidden bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/images/rectangle.svg')" }}
+        >
+          <div className="flex relative z-20 flex-col items-start px-8 w-full text-left lg:w-1/2 lg:pl-20">
+            <h2 className="text-4xl lg:text-[56px] font-bold leading-[1.1] mb-5 text-white">
               Start posting <br />
               jobs today
             </h2>
-            <p className="mb-8 text-lg font-medium text-white/90">
+            <p className="mb-10 text-lg font-normal text-white/90">
               Start posting jobs for only $10.
             </p>
             <Link
-              href="/signup"
-              className="px-10 py-5 text-lg font-extrabold bg-white rounded-sm shadow-lg transition-all text-[#4640DE] hover:bg-gray-50 active:scale-95 whitespace-nowrap"
+              href="/login"
+              className="px-10 py-4 text-base font-bold bg-white rounded text-[#4640DE] hover:bg-gray-50 transition-all active:scale-95 whitespace-nowrap inline-block shadow-lg"
             >
               Sign Up For Free
             </Link>
           </div>
 
-          {/* Graphic Area */}
-          <div className="relative z-10 lg:w-[55%] w-full h-[300px] lg:h-[450px] flex items-center justify-center lg:justify-end lg:pr-4 overflow-visible">
-            <div className="relative w-full h-full max-w-[650px] lg:scale-110 lg:translate-x-10 lg:translate-y-4 transition-transform duration-500 group-hover:scale-[1.12]">
+          <div className="absolute right-0 bottom-0 top-0 lg:w-[650px] hidden lg:flex items-end justify-end pointer-events-none transform lg:-translate-x-20">
+            <div className="relative w-full h-[95%] mb-0">
               <Image
                 src="/images/dashboard_ompany.svg"
                 alt="QuickHire Dashboard"
                 fill
-                className="object-contain"
+                className="object-contain object-bottom-right"
                 priority
-              />
-            </div>
-          </div>
-
-          {/* Circular Portrait at the bottom */}
-          <div className="absolute bottom-[-35px] left-1/2 -translate-x-1/2 z-20 hidden lg:block translate-y-2">
-            <div className="relative w-[75px] h-[75px] rounded-full border-4 border-white shadow-xl overflow-hidden bg-gray-100">
-              <Image
-                src="/images/man.png"
-                alt="QuickHire User"
-                fill
-                className="object-cover"
               />
             </div>
           </div>

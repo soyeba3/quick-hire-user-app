@@ -133,7 +133,7 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      <main className="overflow-y-auto flex-grow p-12 ml-80">{children}</main>
+      <main className="overflow-y-auto p-12 ml-80 grow">{children}</main>
     </div>
   );
 }

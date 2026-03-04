@@ -4,9 +4,13 @@ import {
   ApplicationInput,
   applicationSchema,
 } from "@/app/jobs/schemas/application.schema";
+import { useToast } from "@/components/toasts";
 import { useSubmitApplication } from "@/services/application-service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { SuccessModal } from "./success-modal";
 
 export const ApplyForm = ({
   jobId,
@@ -15,6 +19,9 @@ export const ApplyForm = ({
   jobId: number;
   jobTitle: string;
 }) => {
+  const router = useRouter();
+  const { showToast } = useToast();
+  const [showSuccess, setShowSuccess] = useState(false);
   const { mutate: apply, isPending } = useSubmitApplication();
 
   const {
@@ -35,9 +42,23 @@ export const ApplyForm = ({
       {
         onSuccess: () => {
           reset();
+          setShowSuccess(true);
+        },
+        onError: (error) => {
+          showToast({
+            variant: "error",
+            title: "Submission Failed",
+            description:
+              error.message || "Something went wrong while applying.",
+          });
         },
       },
     );
+  };
+
+  const handleModalClose = () => {
+    setShowSuccess(false);
+    router.push("/jobs");
   };
 
   return (
@@ -125,6 +146,12 @@ export const ApplyForm = ({
           {isPending ? "Submitting..." : "Submit Application"}
         </button>
       </form>
+
+      <SuccessModal
+        isOpen={showSuccess}
+        onClose={handleModalClose}
+        message={`Your application for ${jobTitle} has been submitted successfully. We will get back to you soon.`}
+      />
     </div>
   );
 };

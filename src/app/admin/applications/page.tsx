@@ -15,7 +15,7 @@ export default function ApplicationsPage() {
 
   return (
     <div>
-      <div className="mb-12">
+      <div className="mt-12 mb-12">
         <h1 className="text-4xl font-bold text-text-dark">Job Applications</h1>
         <p className="mt-2 text-lg text-text-gray">
           Review and manage candidates who applied for jobs

@@ -11,21 +11,22 @@ export const CompanyLogos = () => {
 
   return (
     <div className="py-8 bg-white">
-      <div className="container mx-auto px-4 md:px-8">
-        <p className="text-text-gray mb-6 text-sm lg:text-base">
+      <div className="container px-4 mx-auto md:px-8">
+        <p className="mb-6 text-sm text-text-gray lg:text-base">
           Companies we helped grow
         </p>
-        <div className="flex flex-wrap justify-between items-center gap-6 md:gap-8 opacity-60">
+        <div className="grid grid-cols-2 gap-8 items-center opacity-60 md:grid-cols-3 lg:grid-cols-5 md:gap-12">
           {companies.map((company) => (
             <div
               key={company.name}
-              className="relative h-6 md:h-8 w-24 md:w-32"
+              className="relative mx-auto w-full h-8 md:h-10"
             >
               <Image
                 src={company.src}
                 alt={`${company.name} logo`}
                 fill
-                className="object-contain grayscale hover:grayscale-0 transition-all"
+                className="object-contain grayscale transition-all hover:grayscale-0"
+                priority
               />
             </div>
           ))}

@@ -66,9 +66,9 @@ export const HeroSection = () => {
           </div>
 
           {/* Right Content: Hero Image */}
-          <div className="lg:w-1/2 relative h-[450px] md:h-[600px] lg:h-[750px] w-full flex justify-center lg:justify-end items-end lg:absolute lg:right-0 lg:bottom-0 z-20 pointer-events-none lg:-mr-12">
+          <div className="lg:w-1/2 hidden lg:block relative h-[450px] md:h-[600px] lg:h-[750px] w-full flex justify-center lg:justify-end items-end lg:absolute lg:right-0 lg:bottom-0 z-20 pointer-events-none lg:-mr-12">
             {/* Man Image */}
-            <div className="relative z-10 w-full h-full max-w-[500px] lg:max-w-[800px] lg:mx-0 mx-auto">
+            <div className=" relative z-10 w-full h-full max-w-[500px] lg:max-w-[800px] lg:mx-0 mx-auto">
               <Image
                 src="/images/man.png"
                 alt="Job seeker pointing"

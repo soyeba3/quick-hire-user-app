@@ -21,24 +21,21 @@ export const Navbar = () => {
   ];
 
   return (
-    <nav className="absolute top-0 left-0 w-full flex items-center h-24 bg-transparent z-50">
+    <nav className="flex absolute top-0 left-0 z-50 items-center w-full h-24 bg-transparent">
       <div className="w-full max-w-[1440px] px-4 md:px-12 lg:px-20 xl:px-24 mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex gap-2 items-center">
           <Image
             src="/images/logo/logo.png"
             alt="QuickHire Logo"
-            width={32}
-            height={32}
+            width={112}
+            height={112}
             className="object-contain"
           />
-          <span className="text-xl md:text-2xl font-black text-text-dark tracking-tight">
-            QuickHire
-          </span>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden gap-8 items-center md:flex font-semibold text-sm">
+        <div className="hidden gap-8 items-center text-sm font-semibold md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -54,7 +51,7 @@ export const Navbar = () => {
         </div>
 
         {/* Auth Buttons */}
-        <div className="flex gap-4 lg:gap-6 items-center text-sm font-bold">
+        <div className="flex gap-4 items-center text-sm font-bold lg:gap-6">
           {isAuthenticated === true ? (
             <>
               {user?.role === "admin" && (
@@ -65,7 +62,7 @@ export const Navbar = () => {
                   Dashboard
                 </Link>
               )}
-              <div className="hidden md:block w-px h-6 bg-border-base" />
+              <div className="hidden w-px h-6 md:block bg-border-base" />
               <button
                 onClick={removeAuth}
                 className="px-6 py-3 transition-all text-text-dark hover:text-primary active:scale-95"
