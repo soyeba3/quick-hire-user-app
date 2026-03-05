@@ -32,7 +32,7 @@ export default function JobsPage() {
             </h1>
 
             <div className="flex flex-col gap-4 items-center p-4 bg-white border shadow-xl border-border-base md:flex-row">
-              <div className="flex flex-grow gap-3 items-center pb-4 w-full border-b md:border-b-0 md:border-r border-border-base md:pb-0 md:pr-4">
+              <div className="flex gap-3 items-center pb-4 w-full border-b grow md:border-b-0 md:border-r border-border-base md:pb-0 md:pr-4">
                 <Search className="text-primary" size={24} />
                 <input
                   type="text"
@@ -42,7 +42,7 @@ export default function JobsPage() {
                   className="w-full font-medium focus:outline-none text-text-dark"
                 />
               </div>
-              <div className="flex flex-grow gap-3 items-center w-full">
+              <div className="flex gap-3 items-center w-full grow">
                 <MapPin className="text-primary" size={24} />
                 <select className="w-full font-medium bg-transparent appearance-none focus:outline-none text-text-dark">
                   <option>Florence, Italy</option>
@@ -65,7 +65,6 @@ export default function JobsPage() {
       </div>
 
       <div className="container flex flex-col gap-12 px-4 py-16 mx-auto md:px-8 md:flex-row">
-        {/* Filters Sidebar */}
         <JobFilters
           jobs={allJobsData?.items}
           selectedType={selectedType}
@@ -74,9 +73,7 @@ export default function JobsPage() {
           setSelectedCategory={setSelectedCategory}
         />
 
-        {/* Main Content */}
-        <div className="flex-grow">
-          {/* Controls */}
+        <div className="grow">
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-3xl font-bold text-text-dark">All Jobs</h2>
@@ -106,7 +103,6 @@ export default function JobsPage() {
             </div>
           </div>
 
-          {/* Job List */}
           {isLoading ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {[1, 2, 3, 4].map((i) => (

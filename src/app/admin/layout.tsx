@@ -81,7 +81,6 @@ export default function AdminLayout({
 
   return (
     <div className="flex min-h-screen bg-bg-light">
-      {/* Mobile Header */}
       <div className="flex fixed top-0 right-0 left-0 z-40 justify-between items-center p-4 bg-white border-b lg:hidden border-border-base">
         <div className="flex gap-2 items-center">
           <div className="w-8 h-8 rounded-lg bg-primary" />
@@ -97,15 +96,12 @@ export default function AdminLayout({
         </button>
       </div>
 
-      {/* Sidebar Overlay */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/50 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
-
-      {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex flex-col w-80 bg-white border-r shadow-sm border-border-base transition-transform duration-300 lg:translate-x-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

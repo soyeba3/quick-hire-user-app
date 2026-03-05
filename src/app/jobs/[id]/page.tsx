@@ -55,7 +55,6 @@ export default function JobDetailPage() {
 
   return (
     <div className="bg-white">
-      {/* Hero Header */}
       <div className="py-20 border-b bg-bg-light border-border-base">
         <div className="container flex flex-col gap-8 justify-between items-center px-4 mx-auto md:px-8 md:flex-row">
           <div className="flex gap-8 items-center">
@@ -78,7 +77,6 @@ export default function JobDetailPage() {
 
       <div className="container px-4 py-20 mx-auto md:px-8">
         <div className="flex flex-col gap-16 lg:flex-row">
-          {/* Left Column: Description */}
           <div className="lg:w-2/3">
             <h2 className="mb-8 text-3xl font-bold text-text-dark">
               Description
@@ -102,7 +100,6 @@ export default function JobDetailPage() {
             </ul>
           </div>
 
-          {/* Right Column: Sidebar & Form */}
           <div className="lg:w-1/3">
             <div className="space-y-12">
               <section className="p-8 bg-white border border-border-base">
