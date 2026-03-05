@@ -15,9 +15,11 @@ export default function ApplicationsPage() {
 
   return (
     <div>
-      <div className="mt-12 mb-12">
-        <h1 className="text-4xl font-bold text-text-dark">Job Applications</h1>
-        <p className="mt-2 text-lg text-text-gray">
+      <div className="mb-8 md:mb-12">
+        <h1 className="text-3xl font-bold md:text-4xl text-text-dark">
+          Job Applications
+        </h1>
+        <p className="mt-2 text-base md:text-lg text-text-gray">
           Review and manage candidates who applied for jobs
         </p>
       </div>
@@ -27,19 +29,19 @@ export default function ApplicationsPage() {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-border-base bg-bg-light/50">
-                <th className="px-8 py-6 text-lg font-bold text-text-dark">
+                <th className="px-4 py-4 text-base font-bold md:px-8 md:py-6 md:text-lg text-text-dark">
                   Candidate
                 </th>
-                <th className="px-8 py-6 text-lg font-bold text-text-dark">
+                <th className="px-4 py-4 text-base font-bold md:px-8 md:py-6 md:text-lg text-text-dark">
                   Applied For
                 </th>
-                <th className="px-8 py-6 text-lg font-bold text-text-dark">
+                <th className="px-4 py-4 text-base font-bold md:px-8 md:py-6 md:text-lg text-text-dark">
                   Date Applied
                 </th>
-                <th className="px-8 py-6 text-lg font-bold text-text-dark">
+                <th className="px-4 py-4 text-base font-bold md:px-8 md:py-6 md:text-lg text-text-dark">
                   Cover Note
                 </th>
-                <th className="px-8 py-6 text-lg font-bold text-right text-text-dark">
+                <th className="px-4 py-4 text-base font-bold md:px-8 md:py-6 md:text-lg text-right text-text-dark">
                   Resume
                 </th>
               </tr>
@@ -56,45 +58,45 @@ export default function ApplicationsPage() {
                       key={app.id}
                       className="transition-colors hover:bg-bg-light/30"
                     >
-                      <td className="px-8 py-6">
+                      <td className="px-4 py-4 md:px-8 md:py-6">
                         <div className="flex gap-4 items-center">
-                          <div className="flex justify-center items-center w-12 h-12 rounded-full bg-primary/10 text-primary">
+                          <div className="hidden justify-center items-center w-12 h-12 rounded-full sm:flex bg-primary/10 text-primary">
                             <User size={24} />
                           </div>
                           <div className="flex flex-col">
-                            <span className="text-lg font-bold text-text-dark">
+                            <span className="text-base font-bold md:text-lg text-text-dark whitespace-nowrap">
                               {app.name}
                             </span>
-                            <span className="flex gap-1 items-center text-text-light">
+                            <span className="flex gap-1 items-center text-sm md:text-base text-text-light whitespace-nowrap">
                               <Mail size={14} /> {app.email}
                             </span>
                           </div>
                         </div>
                       </td>
-                      <td className="px-8 py-6">
-                        <span className="text-lg font-bold text-text-dark">
+                      <td className="px-4 py-4 md:px-8 md:py-6">
+                        <span className="text-base font-bold md:text-lg text-text-dark whitespace-nowrap">
                           {getJobTitle(app.jobId)}
                         </span>
                       </td>
-                      <td className="px-8 py-6 text-lg text-text-gray">
-                        <div className="flex gap-2 items-center">
+                      <td className="px-4 py-4 md:px-8 md:py-6">
+                        <div className="flex gap-2 items-center text-base md:text-lg text-text-gray whitespace-nowrap">
                           <Clock size={16} />
                           {format(new Date(app.createdAt), "dd MMM yyyy")}
                         </div>
                       </td>
-                      <td className="px-8 py-6">
-                        <p className="max-w-xs italic text-text-gray line-clamp-2">
+                      <td className="px-4 py-4 md:px-8 md:py-6">
+                        <p className="max-w-xs italic text-sm md:text-base text-text-gray line-clamp-2 min-w-[200px]">
                           {'"'}
                           {app.coverNote}
                           {'"'}
                         </p>
                       </td>
-                      <td className="px-8 py-6 text-right">
+                      <td className="px-4 py-4 text-right md:px-8 md:py-6">
                         <a
                           href={app.resumeLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex gap-2 items-center font-bold transition-all text-primary hover:underline"
+                          className="inline-flex gap-2 items-center text-sm font-bold transition-all md:text-base text-primary hover:underline whitespace-nowrap"
                         >
                           View Resume
                           <ExternalLink size={18} />

@@ -15,6 +15,8 @@ export const Navbar = () => {
   const pathname = usePathname();
   const { isAuthenticated, user, removeAuth } = useAuth();
 
+  if (pathname.startsWith("/admin")) return null;
+
   const navLinks = [
     { label: "Find Jobs", href: "/jobs" },
     { label: "Browse Companies", href: "/companies" },
@@ -23,7 +25,6 @@ export const Navbar = () => {
   return (
     <nav className="flex absolute top-0 left-0 z-50 items-center w-full h-24 bg-transparent">
       <div className="w-full max-w-[1440px] px-4 md:px-12 lg:px-20 xl:px-24 mx-auto flex justify-between items-center">
-        {/* Logo */}
         <Link href="/" className="flex gap-2 items-center">
           <Image
             src="/images/logo/logo.png"
@@ -34,7 +35,6 @@ export const Navbar = () => {
           />
         </Link>
 
-        {/* Desktop Nav */}
         <div className="hidden gap-8 items-center text-sm font-semibold md:flex">
           {navLinks.map((link) => (
             <Link
@@ -50,7 +50,6 @@ export const Navbar = () => {
           ))}
         </div>
 
-        {/* Auth Buttons */}
         <div className="flex gap-4 items-center text-sm font-bold lg:gap-6">
           {isAuthenticated === true ? (
             <>

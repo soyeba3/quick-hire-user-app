@@ -20,6 +20,8 @@ export default function JobsPage() {
     limit: 10,
   });
 
+  const { data: allJobsData } = useGetJobs();
+
   return (
     <div className="mt-12 min-h-screen bg-white">
       <div className="py-12 border-b border-border-base">
@@ -29,7 +31,7 @@ export default function JobsPage() {
               Find your dream job
             </h1>
 
-            <div className="flex flex-col gap-4 items-center p-4 bg-white border shadow-xl border-border-base md:row">
+            <div className="flex flex-col gap-4 items-center p-4 bg-white border shadow-xl border-border-base md:flex-row">
               <div className="flex flex-grow gap-3 items-center pb-4 w-full border-b md:border-b-0 md:border-r border-border-base md:pb-0 md:pr-4">
                 <Search className="text-primary" size={24} />
                 <input
@@ -65,6 +67,7 @@ export default function JobsPage() {
       <div className="container flex flex-col gap-12 px-4 py-16 mx-auto md:px-8 md:flex-row">
         {/* Filters Sidebar */}
         <JobFilters
+          jobs={allJobsData?.items}
           selectedType={selectedType}
           setSelectedType={setSelectedType}
           selectedCategory={selectedCategory}

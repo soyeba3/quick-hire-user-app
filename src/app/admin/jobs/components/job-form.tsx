@@ -64,24 +64,24 @@ export default function JobForm({ jobToEdit }: JobFormProps) {
         Back to Jobs
       </Link>
 
-      <div className="flex justify-between items-center mb-12">
-        <h1 className="text-4xl font-bold text-text-dark">
+      <div className="flex justify-between items-center mb-8 md:mb-12">
+        <h1 className="text-3xl font-bold md:text-4xl text-text-dark">
           {jobToEdit ? "Edit Job" : "Post a New Job"}
         </h1>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
-        <div className="p-12 space-y-8 bg-white border shadow-sm border-border-base">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="p-6 space-y-6 bg-white border shadow-sm md:p-12 md:space-y-8 border-border-base">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
             <div className="space-y-3">
-              <label className="block text-xl font-bold text-text-dark">
+              <label className="block text-lg font-bold md:text-xl text-text-dark">
                 Job Title
               </label>
               <input
                 type="text"
                 {...register("title")}
                 placeholder="e.g. Senior Product Designer"
-                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg ${
+                className={`w-full px-4 py-3 md:px-6 md:py-4 border focus:outline-none focus:border-primary text-base md:text-lg ${
                   errors.title ? "border-red-500" : "border-border-base"
                 }`}
               />
@@ -92,14 +92,14 @@ export default function JobForm({ jobToEdit }: JobFormProps) {
               )}
             </div>
             <div className="space-y-3">
-              <label className="block text-xl font-bold text-text-dark">
+              <label className="block text-lg font-bold md:text-xl text-text-dark">
                 Company Name
               </label>
               <input
                 type="text"
                 {...register("company")}
                 placeholder="e.g. Acme Corp"
-                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg ${
+                className={`w-full px-4 py-3 md:px-6 md:py-4 border focus:outline-none focus:border-primary text-base md:text-lg ${
                   errors.company ? "border-red-500" : "border-border-base"
                 }`}
               />
@@ -111,16 +111,16 @@ export default function JobForm({ jobToEdit }: JobFormProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
             <div className="space-y-3">
-              <label className="block text-xl font-bold text-text-dark">
+              <label className="block text-lg font-bold md:text-xl text-text-dark">
                 Location
               </label>
               <input
                 type="text"
                 {...register("location")}
                 placeholder="e.g. San Francisco, CA"
-                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg ${
+                className={`w-full px-4 py-3 md:px-6 md:py-4 border focus:outline-none focus:border-primary text-base md:text-lg ${
                   errors.location ? "border-red-500" : "border-border-base"
                 }`}
               />
@@ -131,12 +131,12 @@ export default function JobForm({ jobToEdit }: JobFormProps) {
               )}
             </div>
             <div className="space-y-3">
-              <label className="block text-xl font-bold text-text-dark">
+              <label className="block text-lg font-bold md:text-xl text-text-dark">
                 Category
               </label>
               <select
                 {...register("category")}
-                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg bg-white appearance-none ${
+                className={`w-full px-4 py-3 md:px-6 md:py-4 border focus:outline-none focus:border-primary text-base md:text-lg bg-white appearance-none ${
                   errors.category ? "border-red-500" : "border-border-base"
                 }`}
               >
@@ -156,12 +156,12 @@ export default function JobForm({ jobToEdit }: JobFormProps) {
               )}
             </div>
             <div className="space-y-3">
-              <label className="block text-xl font-bold text-text-dark">
+              <label className="block text-lg font-bold md:text-xl text-text-dark">
                 Employment Type
               </label>
               <select
                 {...register("type")}
-                className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg bg-white appearance-none ${
+                className={`w-full px-4 py-3 md:px-6 md:py-4 border focus:outline-none focus:border-primary text-base md:text-lg bg-white appearance-none ${
                   errors.type ? "border-red-500" : "border-border-base"
                 }`}
               >
@@ -179,14 +179,14 @@ export default function JobForm({ jobToEdit }: JobFormProps) {
           </div>
 
           <div className="space-y-3">
-            <label className="block text-xl font-bold text-text-dark">
+            <label className="block text-lg font-bold md:text-xl text-text-dark">
               Job Description
             </label>
             <textarea
               {...register("description")}
               rows={12}
               placeholder="Detailed job description..."
-              className={`w-full px-6 py-4 border focus:outline-none focus:border-primary text-lg resize-none ${
+              className={`w-full px-4 py-3 md:px-6 md:py-4 border focus:outline-none focus:border-primary text-base md:text-lg resize-none ${
                 errors.description ? "border-red-500" : "border-border-base"
               }`}
             />
@@ -197,11 +197,11 @@ export default function JobForm({ jobToEdit }: JobFormProps) {
             )}
           </div>
 
-          <div className="flex justify-end pt-8">
+          <div className="flex justify-end pt-4 md:pt-8">
             <button
               type="submit"
               disabled={isPending}
-              className="flex gap-3 items-center px-12 py-5 text-xl font-bold text-white shadow-xl transition-all bg-primary hover:bg-opacity-90 shadow-primary/20 disabled:opacity-50"
+              className="flex gap-3 justify-center items-center px-8 py-4 w-full text-lg font-bold text-white shadow-xl transition-all md:px-12 md:py-5 md:text-xl md:w-auto bg-primary hover:bg-opacity-90 shadow-primary/20 disabled:opacity-50"
             >
               <Save size={24} />
               {isPending

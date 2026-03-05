@@ -1,6 +1,8 @@
 "use client";
 
+import { Job } from "@/types";
 import { Check } from "lucide-react";
+import { useMemo } from "react";
 
 interface FilterSectionProps {
   title: string;
@@ -56,36 +58,52 @@ const FilterSection = ({
 );
 
 export const JobFilters = ({
+  jobs = [],
   selectedType,
   setSelectedType,
   selectedCategory,
   setSelectedCategory,
 }: {
+  jobs?: Job[];
   selectedType: string;
   setSelectedType: (v: string) => void;
   selectedCategory: string;
   setSelectedCategory: (v: string) => void;
 }) => {
-  const typeOptions = [
-    { label: "Full-Time", value: "Full-Time" },
-    { label: "Part-Time", value: "Part-Time" },
-    { label: "Contract", value: "Contract" },
-    { label: "Remote", value: "Remote" },
-  ];
+  const typeOptions = useMemo(
+    () =>
+      [
+        { label: "Full-Time", value: "Full-Time" },
+        { label: "Part-Time", value: "Part-Time" },
+        { label: "Contract", value: "Contract" },
+        { label: "Remote", value: "Remote" },
+      ].map((opt) => ({
+        ...opt,
+        count: jobs.filter((job) => job.type === opt.value).length,
+      })),
+    [jobs],
+  );
 
-  const categoryOptions = [
-    { label: "Design", count: 24, value: "Design" },
-    { label: "Sales", count: 12, value: "Sales" },
-    { label: "Marketing", count: 42, value: "Marketing" },
-    { label: "Finance", count: 18, value: "Finance" },
-    { label: "Technology", count: 56, value: "Technology" },
-    { label: "Engineering", count: 34, value: "Engineering" },
-    { label: "Business", count: 22, value: "Business" },
-    { label: "Human Resource", count: 15, value: "Human Resource" },
-  ];
+  const categoryOptions = useMemo(
+    () =>
+      [
+        { label: "Design", value: "Design" },
+        { label: "Sales", value: "Sales" },
+        { label: "Marketing", value: "Marketing" },
+        { label: "Finance", value: "Finance" },
+        { label: "Technology", value: "Technology" },
+        { label: "Engineering", value: "Engineering" },
+        { label: "Business", value: "Business" },
+        { label: "Human Resource", value: "Human Resource" },
+      ].map((opt) => ({
+        ...opt,
+        count: jobs.filter((job) => job.category === opt.value).length,
+      })),
+    [jobs],
+  );
 
   return (
-    <aside className="flex-shrink-0 w-full md:w-80">
+    <aside className="w-full shrink-0 md:w-80">
       <FilterSection
         title="Type of Employment"
         options={typeOptions}

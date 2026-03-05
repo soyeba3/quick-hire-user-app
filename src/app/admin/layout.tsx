@@ -7,11 +7,13 @@ import {
   LayoutDashboard,
   LogOut,
   LucideIcon,
+  Menu,
   Settings,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 const subscribe = () => () => {};
 const getSnapshot = () => true;
@@ -22,14 +24,17 @@ const SidebarItem = ({
   label,
   href,
   active,
+  onClick,
 }: {
   icon: LucideIcon;
   label: string;
   href: string;
   active: boolean;
+  onClick?: () => void;
 }) => (
   <Link
     href={href}
+    onClick={onClick}
     className={`flex items-center gap-4 px-6 py-4 transition-all border-l-4 ${
       active
         ? "font-bold bg-primary/10 border-primary text-primary"
@@ -54,6 +59,7 @@ export default function AdminLayout({
   const { isAuthenticated, removeAuth, user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (mounted === true && isAuthenticated === false) {
@@ -75,38 +81,79 @@ export default function AdminLayout({
 
   return (
     <div className="flex min-h-screen bg-bg-light">
-      <aside className="flex fixed inset-y-0 z-50 flex-col w-80 bg-white border-r shadow-sm border-border-base">
-        <div className="flex gap-3 items-center p-8 border-b border-border-base">
-          <div className="w-10 h-10 rounded-lg bg-primary" />
-          <span className="text-2xl italic font-black tracking-tighter text-text-dark">
+      {/* Mobile Header */}
+      <div className="flex fixed top-0 right-0 left-0 z-40 justify-between items-center p-4 bg-white border-b lg:hidden border-border-base">
+        <div className="flex gap-2 items-center">
+          <div className="w-8 h-8 rounded-lg bg-primary" />
+          <span className="text-xl italic font-black tracking-tighter text-text-dark">
             QuickHire Admin
           </span>
         </div>
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="p-2 rounded-lg bg-bg-light text-text-dark"
+        >
+          <Menu size={24} />
+        </button>
+      </div>
 
-        <nav className="flex-grow py-8">
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/50 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col w-80 bg-white border-r shadow-sm border-border-base transition-transform duration-300 lg:translate-x-0 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex gap-3 justify-between items-center p-8 border-b border-border-base">
+          <div className="flex gap-3 items-center">
+            <div className="w-10 h-10 rounded-lg bg-primary" />
+            <span className="text-2xl italic font-black tracking-tighter text-text-dark">
+              QuickHire Admin
+            </span>
+          </div>
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="p-2 rounded-lg lg:hidden bg-bg-light text-text-dark"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <nav className="py-8 grow">
           <SidebarItem
             icon={LayoutDashboard}
             label="Dashboard"
             href="/admin"
             active={pathname === "/admin"}
+            onClick={() => setIsSidebarOpen(false)}
           />
           <SidebarItem
             icon={Briefcase}
             label="Job Listings"
             href="/admin/jobs"
             active={pathname.includes("/admin/jobs")}
+            onClick={() => setIsSidebarOpen(false)}
           />
           <SidebarItem
             icon={FileText}
             label="Applications"
             href="/admin/applications"
             active={pathname.includes("/admin/applications")}
+            onClick={() => setIsSidebarOpen(false)}
           />
           <SidebarItem
             icon={Settings}
             label="Settings"
             href="/admin/settings"
             active={pathname.includes("/admin/settings")}
+            onClick={() => setIsSidebarOpen(false)}
           />
         </nav>
 
@@ -133,7 +180,9 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      <main className="overflow-y-auto p-12 ml-80 grow">{children}</main>
+      <main className="overflow-y-auto p-4 pt-24 grow md:p-8 lg:p-12 lg:ml-80 lg:pt-12">
+        {children}
+      </main>
     </div>
   );
 }

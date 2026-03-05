@@ -1,9 +1,15 @@
+"use client";
+
 import { Facebook, Globe, Instagram, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export const Footer = () => {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <footer className="py-16 text-white" style={{ backgroundColor: "#202430" }}>
